@@ -1,8 +1,5 @@
 package br.com.alura.leilao.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import br.com.alura.leilao.dao.LeilaoDao;
 import br.com.alura.leilao.dao.PagamentoDao;
 import br.com.alura.leilao.model.Lance;
 import br.com.alura.leilao.model.Leilao;
@@ -14,8 +11,9 @@ import org.mockito.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class GeradorDePagamentoTest {
 
@@ -32,7 +30,6 @@ class GeradorDePagamentoTest {
         MockitoAnnotations.initMocks(this);
         this.service = new GeradorDePagamento(pagamentoDao);
     }
-
 
     @Test
     void deveriaCriarPagamentoParaVencedorDoLeilao(){

@@ -3,6 +3,8 @@ package br.com.alura.leilao.dao;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.util.JPAUtil;
+import br.com.alura.leilao.util.LeilaoBuilder;
+import br.com.alura.leilao.util.UsuarioBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,8 +37,21 @@ class LeilaoDaoTest {
 
     @Test
     void deveriaCriarUmLeilao(){
-        Usuario usuario = getUsuario();
-        Leilao leilao = new Leilao("Mochila", new BigDecimal("500"), LocalDate.now(), usuario);
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("Fulano")
+                .comEmail("fulano@email.com")
+                .comSenha("12345678")
+                .criar();
+
+        em.persist(usuario);
+
+        Leilao leilao = new LeilaoBuilder()
+                .comNome("Mochila")
+                .comValorInicial("500")
+                .comData(LocalDate.now())
+                .comUsuario(usuario)
+                .criar();
+
         leilao = dao.salvar(leilao);
 
         Leilao leilaoEncontrado = dao.buscarPorId(leilao.getId());
@@ -46,8 +61,22 @@ class LeilaoDaoTest {
 
     @Test
     void deveriaAtualizarUmLeilao(){
-        Usuario usuario = getUsuario();
-        Leilao leilao = new Leilao("Mochila", new BigDecimal("500"), LocalDate.now(), usuario);
+
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("Fulano")
+                .comEmail("fulano@email.com")
+                .comSenha("12345678")
+                .criar();
+
+        em.persist(usuario);
+
+        Leilao leilao = new LeilaoBuilder()
+                .comNome("Mochila")
+                .comValorInicial("500")
+                .comData(LocalDate.now())
+                .comUsuario(usuario)
+                .criar();
+
         leilao = dao.salvar(leilao);
 
         leilao.setNome("Geladeira");
@@ -57,12 +86,6 @@ class LeilaoDaoTest {
 
         assertNotNull(leilaoEncontrado);
         assertEquals("Geladeira", leilao.getNome());
-    }
-
-    private Usuario getUsuario() {
-        Usuario fulano = new Usuario("fulano", "fulano@email.com", "123456789");
-        em.persist(fulano);
-        return fulano;
     }
 
 }

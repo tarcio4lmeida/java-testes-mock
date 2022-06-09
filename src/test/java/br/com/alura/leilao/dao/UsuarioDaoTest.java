@@ -39,6 +39,16 @@ class UsuarioDaoTest {
     }
 
     @Test
+    void deveDeletarUmUsuario(){
+        Usuario fulano = getUsuario();
+        dao.deletar(fulano);
+
+        assertThrows(NoResultException.class,
+                () ->this.dao.buscarPorUsername("fulano"));
+
+    }
+
+    @Test
     void naoDeveriaEncontrarUsuarioNaoEncontrado(){
         getUsuario();
 
